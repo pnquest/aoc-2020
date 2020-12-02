@@ -14,8 +14,8 @@ namespace Day2
         {
             string[] lines = await File.ReadAllLinesAsync("./input.txt");
 
-            Parser<char, PasswordData> parser = Num.Then(Char('-'), (f, _) => new PasswordData { MinOccurances = f })
-                                 .Then(Num, (d, n) => { d.MaxOccurances = n; return d; })
+            Parser<char, PasswordData> parser = Num.Then(Char('-'), (f, _) => new PasswordData { LowerLimit = f })
+                                 .Then(Num, (d, n) => { d.UpperLimit = n; return d; })
                                  .Then(Whitespace, (d, _) => d)
                                  .Then(Any, (d, c) => { d.TargetChar = c; return d; })
                                  .Then(Char(':'), (d, _) => d)
