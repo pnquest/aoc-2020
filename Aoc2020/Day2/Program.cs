@@ -13,14 +13,22 @@ namespace Day2
         static async Task Main(string[] args)
         {
             string[] lines = await File.ReadAllLinesAsync("./input.txt");
-
-            Parser<char, PasswordData> parser = Num.Then(Char('-'), (f, _) => new PasswordData { LowerLimit = f })
-                                 .Then(Num, (d, n) => { d.UpperLimit = n; return d; })
-                                 .Then(Whitespace, (d, _) => d)
-                                 .Then(Any, (d, c) => { d.TargetChar = c; return d; })
-                                 .Then(Char(':'), (d, _) => d)
-                                 .Then(Whitespace, (d, _) => d)
-                                 .Then(Any.ManyString(), (d, p) => { d.Password = p; return d; });
+            var parser = Map(
+                (f, _, s, _, c, _, _, p) => new PasswordData 
+                    { 
+                        LowerLimit = f, 
+                        UpperLimit = s, 
+                        TargetChar = c, 
+                        Password = p 
+                    },
+                Num,
+                Char('-'),
+                Num,
+                Whitespace,
+                Any,
+                Char(':'),
+                Whitespace,
+                Any.ManyString());
 
             PasswordData[] parsed = lines
                             .Select(l => parser.ParseOrThrow(l))
