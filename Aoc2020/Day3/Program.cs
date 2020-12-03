@@ -54,18 +54,13 @@ namespace Day3
 
             while (curHeight < maxHeight)
             {
-                curWidth += rightSlope;
-                curHeight += downSlope;
-
-                if (curHeight >= maxHeight)
-                {
-                    break;
-                }
-
                 if (map[curHeight][curWidth % maxWidth] == '#')
                 {
                     treeCount++;
                 }
+
+                curWidth += rightSlope;
+                curHeight += downSlope;
             }
 
             return treeCount;
