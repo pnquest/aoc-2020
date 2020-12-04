@@ -7,8 +7,8 @@ namespace Day4
     public class PassportData
     {
         private Dictionary<string, PassportField> _values;
-        private readonly Regex _hairColorRegex = new Regex("^#[0-9a-f]{6}$");
-        private readonly Regex _passportIdRegex = new Regex("^[0-9]{9}$");
+        private static readonly Regex _hairColorRegex = new Regex("^#[0-9a-f]{6}$");
+        private static readonly Regex _passportIdRegex = new Regex("^[0-9]{9}$");
 
         public int? BirthYear => GetFieldValue("byr")?.AsInt();
         public int? IssueYear => GetFieldValue("iyr")?.AsInt();

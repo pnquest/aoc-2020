@@ -10,10 +10,11 @@ namespace Day4
     {
         static void Main(string[] args)
         {
-            var fieldParser = AnyCharExcept(':').ManyString().Before(Char(':')).Then(AnyCharExcept(' ', '\n').ManyString(), (f, v) => new PassportField(f, v));
+            var fieldParser = AnyCharExcept(':', '\n').ManyString().Before(Char(':')).Then(AnyCharExcept(' ', '\n').ManyString(), (f, v) => new PassportField(f, v));
             Parser<char, PassportData> passportParser = fieldParser.SeparatedAndOptionallyTerminated(Whitespace).Map(f => new PassportData(f));
+            Parser<char, PassportData[]> passportsParser = passportParser.SeparatedAndOptionallyTerminated(Whitespace).Map(r => r.ToArray());
 
-            PassportData[] passports = File.ReadAllText("./input.txt").Split("\n\n").Select(s => passportParser.ParseOrThrow(s)).ToArray();
+            PassportData[] passports = passportsParser.ParseOrThrow(File.ReadAllText("./input.txt"));
 
             Part1(passports);
             Part2(passports);
