@@ -23,7 +23,7 @@ namespace Day6
             {
                 if (line == string.Empty)
                 {
-                    sum += AggregateGroupMembers(sum, groupMemebers);
+                    sum += AggregateGroupMembers(groupMemebers);
 
                     groupMemebers.Clear();
                 }
@@ -33,36 +33,24 @@ namespace Day6
                 }
             }
 
-            sum += AggregateGroupMembers(sum, groupMemebers);
+            sum += AggregateGroupMembers(groupMemebers);
 
             Console.WriteLine($"Part 2: {sum}");
         }
 
         private static int ConvertMemberToBitmask(string line)
         {
-            int member = 0;
-
-            foreach (char c in line)
-            {
-                int offset = c - 'a';
-
-                member |= (int)Math.Pow(2, offset);
-            }
-
-            return member;
+            return line
+                .Select(c => (int)Math.Pow(2, c - 'a'))
+                .Aggregate(0, (a, i) => a | i);
         }
 
-        private static int AggregateGroupMembers(int sum, List<int> groupMemebers)
+        private static int AggregateGroupMembers(List<int> groupMemebers)
         {
-            int putTogeter = groupMemebers[0];
-            if (groupMemebers.Count > 1)
-            {
-                foreach (int m in groupMemebers.ToArray()[1..])
-                {
-                    putTogeter &= m;
-                }
-            }
-            BitArray bits = new(new[] { putTogeter });
+            int aggregated = groupMemebers
+                .Aggregate(int.MaxValue, (a, i) => a & i);
+
+            BitArray bits = new(new[] { aggregated });
             return bits.Cast<bool>().Count(bits => bits);
         }
 
