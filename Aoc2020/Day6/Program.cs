@@ -45,7 +45,7 @@ namespace Day6
                 .Aggregate(0, (a, i) => a | i);
         }
 
-        private static int AggregateGroupMembers(List<int> groupMemebers)
+        private static int AggregateGroupMembers(IEnumerable<int> groupMemebers)
         {
             int aggregated = groupMemebers
                 .Aggregate(int.MaxValue, (a, i) => a & i);
